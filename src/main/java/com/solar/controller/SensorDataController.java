@@ -1,5 +1,6 @@
 package com.solar.controller;
 
+import com.solar.dto.ApiResponse;
 import com.solar.dto.SensorDataDTO;
 import com.solar.entity.SensorData;
 import com.solar.repository.SensorDataRepository;
@@ -26,14 +27,22 @@ public class SensorDataController {
 
     // get all data
     @GetMapping
-    public List<SensorDataDTO> getAll(){
-        return service.getAllData();
+    public ApiResponse<List<SensorDataDTO>> getAll(){
+        return new ApiResponse<>(
+                true,
+                "Sensor data Fetched Successfully",
+                service.getAllData()
+        );
     }
 
     // latest reading
     @GetMapping("/latest/{panelId}")
-    public SensorDataDTO getLatestData(@PathVariable Long panelId) {
-        return service.getLatestData(panelId);
+    public ApiResponse<SensorDataDTO> getLatestData(@PathVariable Long panelId) {
+        return new ApiResponse<>(
+                true,
+                "Latest Sensor data fetched Successfully",
+                service.getLatestData(panelId)
+        );
     }
 
     // get data by panel
