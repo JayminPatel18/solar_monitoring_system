@@ -1,9 +1,7 @@
 package com.solar.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +9,10 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
-@Data
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -41,5 +42,6 @@ public class SensorData {
 
     @ManyToOne
     @JoinColumn(name = "panel_id")
+    @JsonBackReference
     private SolarPanel panel;
 }
