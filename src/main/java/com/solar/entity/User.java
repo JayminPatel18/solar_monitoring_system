@@ -1,6 +1,8 @@
 package com.solar.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,8 +31,9 @@ public class User {
     private String email;
 
     @NotBlank(message = "Password is Required")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @NotBlank(message = "Role is Required")
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }

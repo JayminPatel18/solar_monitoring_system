@@ -2,7 +2,9 @@ package com.solar.services;
 
 import com.solar.dto.AuthRequest;
 import com.solar.dto.AuthResponse;
+import com.solar.entity.Role;
 import com.solar.entity.User;
+import com.solar.exception.ResourceNotFoundException;
 import com.solar.repository.UserRepository;
 import com.solar.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class AuthService {
                 passwordEncoder.encode(user.getPassword())
         );
 
+        user.setRole(Role.USER);
         userRepository.save(user);
 
         return "User Registered Successfully";
@@ -51,5 +54,15 @@ public class AuthService {
         String token = jwtUtil.generateToken(user.getEmail());
 
         return new AuthResponse(token);
+    }
+
+    // Update User Role
+    public User updateRole(Long userId, Role role){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found with id : "+userId));
+        user.setRole(role);
+
+        return userRepository.save(user);
     }
 }

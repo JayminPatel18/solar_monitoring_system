@@ -1,8 +1,12 @@
 package com.solar.controller;
 
+import com.solar.dto.ApiResponse;
+import com.solar.dto.RoleUpdateRequest;
 import com.solar.entity.User;
 import com.solar.repository.UserRepository;
+import com.solar.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +23,8 @@ public class UserController {
 
     @Autowired
     private UserRepository repo;
+    @Autowired
+    private AuthService auth;
 
     @Operation(summary = "Create new user")
     @PostMapping
@@ -27,7 +33,22 @@ public class UserController {
     }
 
     @GetMapping
+    @Operation(summary = "Get All Users")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<User> getAllUsers() {
         return repo.findAll();
+    }
+
+    @PutMapping("/{id}/role")
+    @Operation(summary = "Update User Role")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ApiResponse<User> updateRole(@PathVariable Long id, @RequestBody RoleUpdateRequest request){
+        User updatedUser = auth.updateRole(id, request.getRole());
+
+        return new ApiResponse<>(
+                true,
+                "Role Updated Successfully",
+                updatedUser
+        );
     }
 }

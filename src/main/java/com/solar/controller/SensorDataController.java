@@ -8,6 +8,7 @@ import com.solar.services.SensorDataService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class SensorDataController {
     // save data
     @Operation(summary = "Store sensor data")
     @PostMapping
+    @PreAuthorize("hasAnyRole('TECHNICIAN','ADMIN')")
     public SensorData save(@Valid @RequestBody SensorData data){
         return service.saveData(data);
     }
@@ -32,6 +34,7 @@ public class SensorDataController {
     // get all data
     @Operation(summary = "Get All Sensor Data")
     @GetMapping
+    @PreAuthorize("hasAnyRole('USER','TECHNICIAN','ADMIN')")
     public ApiResponse<List<SensorDataDTO>> getAll(){
         return new ApiResponse<>(
                 true,
@@ -43,6 +46,7 @@ public class SensorDataController {
     // latest reading
     @Operation(summary = "Get latest sensor reading")
     @GetMapping("/latest/{panelId}")
+    @PreAuthorize("hasAnyRole('USER','TECHNICIAN','ADMIN')")
     public ApiResponse<SensorDataDTO> getLatestData(@PathVariable Long panelId) {
         return new ApiResponse<>(
                 true,
@@ -54,6 +58,7 @@ public class SensorDataController {
     // get data by panel
     @Operation(summary = "Get Data by panel")
     @GetMapping("/panel/{panelId}")
+    @PreAuthorize("hasAnyRole('USER','TECHNICIAN','ADMIN')")
     public List<SensorDataDTO> getByPanel(@PathVariable Long panelId) {
         return service.getDataByPanel(panelId);
     }
@@ -61,6 +66,7 @@ public class SensorDataController {
     // Total Power
     @Operation(summary = "Get total power generation")
     @GetMapping("/total/{panelId}")
+    @PreAuthorize("hasAnyRole('USER','TECHNICIAN','ADMIN')")
     public Double getTotalPower(@PathVariable Long panelId){
         return service.getTotalPower(panelId);
     }
@@ -68,6 +74,7 @@ public class SensorDataController {
     // Panel Status Logic
     @Operation(summary = "Get smart panel status")
     @GetMapping("/status/{panelId}")
+    @PreAuthorize("hasAnyRole('USER','TECHNICIAN','ADMIN')")
     public String getPanelStatus(@PathVariable Long panelId){
         return service.getPanelStatus(panelId);
     }
