@@ -73,4 +73,22 @@ public class UserController {
                 )
         );
     }
+
+    @Operation(summary = "Update User")
+    @PutMapping("/id")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<User>> updateUser(
+            @PathVariable Long id, @Valid @RequestBody User user
+    ){
+
+        User updatedUser = userService.updateUser(id, user);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        true,
+                        "User Updated Successfully",
+                        updatedUser
+                )
+        );
+    }
 }

@@ -32,4 +32,15 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User not found with id: " + id));
     }
+
+    @Override
+    public User updateUser(Long id, User user){
+        User extingUser = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+
+        extingUser.setName(user.getName());
+        extingUser.setEmail(user.getEmail());
+
+        return userRepository.save(extingUser);
+    }
 }
