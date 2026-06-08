@@ -2,6 +2,7 @@ package com.solar.controller;
 
 import com.solar.dto.ApiResponse;
 import com.solar.dto.RoleUpdateRequest;
+import com.solar.dto.UserUpdateDTO;
 import com.solar.entity.User;
 import com.solar.repository.UserRepository;
 import com.solar.services.AuthService;
@@ -75,19 +76,35 @@ public class UserController {
     }
 
     @Operation(summary = "Update User")
-    @PutMapping("/id")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<User>> updateUser(
-            @PathVariable Long id, @Valid @RequestBody User user
+            @PathVariable Long id, @Valid @RequestBody UserUpdateDTO request
     ){
 
-        User updatedUser = userService.updateUser(id, user);
+        User updatedUser = userService.updateUser(id, request);
 
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         true,
                         "User Updated Successfully",
                         updatedUser
+                )
+        );
+    }
+
+    @Operation(summary = "Delete User")
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<User>> deleteUser(@PathVariable Long id){
+
+        userService.deleteUser(id);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        true,
+                        "User Deleted Successfully",
+                        null
                 )
         );
     }

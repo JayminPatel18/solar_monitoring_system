@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(Long id, User user){
+    public User updateUser(Long id, UserUpdateDTO user){
         User extingUser = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 
@@ -42,5 +42,14 @@ public class UserServiceImpl implements UserService {
         extingUser.setEmail(user.getEmail());
 
         return userRepository.save(extingUser);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+
+        userRepository.delete(user);
     }
 }
