@@ -44,4 +44,9 @@ public class SensorData {
     @JoinColumn(name = "panel_id")
     @JsonBackReference
     private SolarPanel panel;
+
+    @PrePersist
+    public void prePersist() {
+        this.timestamp = LocalDateTime.now();
+    }
 }
