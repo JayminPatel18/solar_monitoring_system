@@ -27,8 +27,14 @@ public class SensorDataController {
     @Operation(summary = "Store sensor data")
     @PostMapping
     @PreAuthorize("hasAnyRole('TECHNICIAN','ADMIN')")
-    public SensorData save(@Valid @RequestBody SensorData data){
-        return service.saveData(data);
+    public ApiResponse<SensorData> save(
+            @Valid @RequestBody SensorData data){
+
+        return new ApiResponse<>(
+                true,
+                "Sensor data saved successfully",
+                service.saveData(data)
+        );
     }
 
     // get all data

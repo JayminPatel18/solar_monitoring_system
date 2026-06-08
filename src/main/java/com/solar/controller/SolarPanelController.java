@@ -1,5 +1,7 @@
 package com.solar.controller;
 
+import com.solar.dto.ApiResponse;
+import com.solar.dto.PanelSummaryDTO;
 import com.solar.entity.SensorData;
 import com.solar.entity.SolarPanel;
 import com.solar.services.SolarPanelService;
@@ -36,4 +38,29 @@ public class SolarPanelController {
     }
 
 
+    @Operation(summary = "Get Panel Summary")
+    @GetMapping("/{id}/summary")
+    @PreAuthorize("hasAnyRole('USER','TECHNICIAN','ADMIN')")
+    public ApiResponse<PanelSummaryDTO> getPanelSummary(
+            @PathVariable Long id) {
+
+        return new ApiResponse<>(
+                true,
+                "Panel Summary fetched successfully",
+                service.getPanelSummary(id)
+        );
+    }
+
+
+    @Operation(summary = "Get All Panel Summaries")
+    @GetMapping("/summaries")
+    @PreAuthorize("hasAnyRole('USER','TECHNICIAN','ADMIN')")
+    public ApiResponse<List<PanelSummaryDTO>> getAllPanelSummaries() {
+
+        return new ApiResponse<>(
+                true,
+                "Panel summaries fetched successfully",
+                service.getAllPanelSummaries()
+        );
+    }
 }

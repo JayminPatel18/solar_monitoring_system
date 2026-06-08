@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class PowerAnalyticsDTO {
+public class TemperatureAnalyticsDTO {
 
     private LocalDateTime timestamp;
-    private Double power;
+    private Double temperature;
 }

@@ -1,5 +1,8 @@
 package com.solar.services;
 
+import com.solar.dto.PerformanceDTO;
+import com.solar.dto.PowerAnalyticsDTO;
+import com.solar.dto.TemperatureAnalyticsDTO;
 import com.solar.entity.SensorData;
 import com.solar.exception.ResourceNotFoundException;
 import com.solar.repository.SensorDataRepository;
@@ -87,6 +90,47 @@ public class SensorDataService {
                 data.getTimestamp(),
                 data.getPanel().getId(),
                 data.getPanel().getPanelName()
+        );
+    }
+
+
+    public List<PowerAnalyticsDTO> getPowerAnalytics(Long panelId){
+
+        return repo.findByPanelId(panelId)
+                .stream()
+                .map(data -> new PowerAnalyticsDTO(
+                        data.getTimestamp(),
+                        data.getPower()
+                ))
+                .toList();
+    }
+
+    public List<TemperatureAnalyticsDTO> getTemperatureAnalytics(Long panelId){
+
+        return repo.findByPanelId(panelId)
+                .stream()
+                .map(data -> new TemperatureAnalyticsDTO(
+                        data.getTimestamp(),
+                        data.getTemperature()
+                ))
+                .toList();
+    }
+
+    public PerformanceDTO getPerformance(Long panelId){
+
+        Double avg =
+                repo.getAveragePower(panelId);
+
+        Double max =
+                repo.getMaxPower(panelId);
+
+        Double min =
+                repo.getMinPower(panelId);
+
+        return new PerformanceDTO(
+                avg != null ? avg : 0,
+                max != null ? max : 0,
+                min != null ? min : 0
         );
     }
 }

@@ -4,10 +4,15 @@ import com.solar.dto.AuthRequest;
 import com.solar.dto.AuthResponse;
 import com.solar.entity.User;
 import com.solar.services.AuthService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(
+        name = "Authentication APIs",
+        description = "User authentication and authorization"
+)
 @RestController
 @RequestMapping("api/auth")
 @RequiredArgsConstructor

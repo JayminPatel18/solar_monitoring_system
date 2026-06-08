@@ -16,12 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/dashboard")
 @RequiredArgsConstructor
-@Tag(name = "Dashboard APIs", description = "Dashboard Summary APIs")
+@Tag(
+        name = "Dashboard APIs",
+        description = "Dashboard summary and monitoring endpoints"
+)
 public class DashboardController {
 
     private final DashboardService dashboardService;
 
-    @Operation(summary = "Get Dashboard Summary")
+    @Operation(
+            summary = "Get Dashboard Summary",
+            description = "Returns overall statistics of users, panels and sensor readings"
+    )
     @GetMapping("/summary")
     @PreAuthorize("hasRole('ADMIN') or hasRole('TECHNICIAN')")
     public ResponseEntity<ApiResponse<DashboardSummaryDTO>> getSummary() {
