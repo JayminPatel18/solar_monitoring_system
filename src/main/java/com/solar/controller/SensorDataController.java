@@ -15,6 +15,10 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 
+import com.solar.dto.PowerAnalyticsDTO;
+import com.solar.dto.TemperatureAnalyticsDTO;
+import com.solar.dto.PerformanceDTO;
+
 @Tag(name = "Sensor Data APIs", description = "Operations related to sensor readings")
 @RestController
 @RequestMapping("/api/data")
@@ -84,4 +88,47 @@ public class SensorDataController {
     public String getPanelStatus(@PathVariable Long panelId){
         return service.getPanelStatus(panelId);
     }
+
+    // Power Analytics
+    @GetMapping("/analytics/power/{panelId}")
+    @PreAuthorize("hasAnyRole('USER','TECHNICIAN','ADMIN')")
+    public ApiResponse<List<PowerAnalyticsDTO>> getPowerAnalytics(
+            @PathVariable Long panelId
+    ) {
+        return new ApiResponse<>(
+                true,
+                "Power analytics fetched successfully",
+                service.getPowerAnalytics(panelId)
+        );
+    }
+
+
+    // Temperature Analytics
+    @GetMapping("/analytics/temperature/{panelId}")
+    @PreAuthorize("hasAnyRole('USER','TECHNICIAN','ADMIN')")
+    public ApiResponse<List<TemperatureAnalyticsDTO>> getTemperatureAnalytics(
+            @PathVariable Long panelId
+    ) {
+        return new ApiResponse<>(
+                true,
+                "Temperature analytics fetched successfully",
+                service.getTemperatureAnalytics(panelId)
+        );
+    }
+
+
+    // Performance Analytics
+    @GetMapping("/analytics/performance/{panelId}")
+    @PreAuthorize("hasAnyRole('USER','TECHNICIAN','ADMIN')")
+    public ApiResponse<PerformanceDTO> getPerformance(
+            @PathVariable Long panelId
+    ) {
+        return new ApiResponse<>(
+                true,
+                "Performance analytics fetched successfully",
+                service.getPerformance(panelId)
+        );
+    }
+
+
 }

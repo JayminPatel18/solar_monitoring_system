@@ -4,6 +4,7 @@ import com.solar.dto.AuthRequest;
 import com.solar.dto.AuthResponse;
 import com.solar.entity.Role;
 import com.solar.entity.User;
+import com.solar.exception.InvalidCredentialsException;
 import com.solar.exception.ResourceNotFoundException;
 import com.solar.repository.UserRepository;
 import com.solar.security.JwtUtil;
@@ -36,24 +37,37 @@ public class AuthService {
     // Login User
     public AuthResponse login(AuthRequest request){
 
+        System.out.println("STEP 1");
+
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() ->
                         new RuntimeException("Invalid Email or Password"));
 
-        // Check Password
+        System.out.println("STEP 2");
+
         boolean passwordMatches = passwordEncoder.matches(
                 request.getPassword(),
                 user.getPassword()
         );
 
+        System.out.println("Password Match = " + passwordMatches);
+
         if(!passwordMatches){
-            throw new RuntimeException("Invalid Email or Password");
+            throw new InvalidCredentialsException("Invalid Email or Password");
         }
 
-        // Generate JWT
+        System.out.println("STEP 3");
+
         String token = jwtUtil.generateToken(user.getEmail());
 
-        return new AuthResponse(token);
+        System.out.println("STEP 4");
+
+        return new AuthResponse(
+                token,
+                user.getRole().name(),
+                user.getName(),
+                user.getId()
+        );
     }
 
     // Update User Role

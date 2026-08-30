@@ -4,6 +4,7 @@ import com.solar.dto.ApiResponse;
 import com.solar.dto.PanelSummaryDTO;
 import com.solar.entity.SensorData;
 import com.solar.entity.SolarPanel;
+import com.solar.exception.ResourceNotFoundException;
 import com.solar.services.SolarPanelService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -61,6 +62,33 @@ public class SolarPanelController {
                 true,
                 "Panel summaries fetched successfully",
                 service.getAllPanelSummaries()
+        );
+    }
+
+    // update panel
+    @Operation(summary = "Update solar panel")
+    @PutMapping("/update/{id}")
+    @PreAuthorize("hasAnyRole('TECHNICIAN','ADMIN')")
+    public SolarPanel updatePanel(
+            @PathVariable Long id,
+            @Valid @RequestBody SolarPanel panel) {
+
+        return service.updatePanel(id, panel);
+    }
+
+    // delete panel by id
+    @Operation(summary = "Delete solar panel")
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyRole('TECHNICIAN','ADMIN')")
+    public ApiResponse<String> deletePanel(
+            @PathVariable Long id) {
+
+        service.deletePanel(id);
+
+        return new ApiResponse<>(
+                true,
+                "Panel deleted successfully",
+                null
         );
     }
 }

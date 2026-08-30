@@ -29,7 +29,7 @@ public class DashboardController {
             description = "Returns overall statistics of users, panels and sensor readings"
     )
     @GetMapping("/summary")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('TECHNICIAN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TECHNICIAN') or hasRole('USER')")
     public ResponseEntity<ApiResponse<DashboardSummaryDTO>> getSummary() {
 
         DashboardSummaryDTO summary = dashboardService.getSummary();

@@ -32,11 +32,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Operation(summary = "Create new user")
-    @PostMapping
-    public User createUser(@Valid @RequestBody User user) {
-        return repo.save(user);
-    }
+//    @Operation(summary = "Create new user")
+//    @PostMapping
+//    public User createUser(@Valid @RequestBody User user) {
+//        return repo.save(user);
+//    }
 
     @GetMapping
     @Operation(summary = "Get All Users")

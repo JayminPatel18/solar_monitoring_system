@@ -30,6 +30,9 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request){
 
+        System.out.println("LOGIN API HIT");
+        System.out.println("EMAIL = " + request.getEmail());
+
         return ResponseEntity.ok(
                 authService.login(request)
         );

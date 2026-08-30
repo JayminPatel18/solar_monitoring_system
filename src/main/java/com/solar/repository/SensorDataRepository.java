@@ -4,6 +4,7 @@ import com.solar.entity.SensorData;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,4 +39,7 @@ public interface SensorDataRepository extends JpaRepository<SensorData, Long> {
             WHERE s.panel.id = :panelId
             """)
     Double getMinPower(@Param("panelId") Long panelId);
+
+    @Transactional
+    void deleteByPanelId(Long panelId);
 }

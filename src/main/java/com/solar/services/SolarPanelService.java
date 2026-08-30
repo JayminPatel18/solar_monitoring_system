@@ -8,6 +8,7 @@ import com.solar.repository.SensorDataRepository;
 import com.solar.repository.SolarPanelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -84,4 +85,34 @@ public class SolarPanelService {
                 .map(panel -> getPanelSummary(panel.getId()))
                 .toList();
     }
+
+    public SolarPanel updatePanel(Long id, SolarPanel updatedPanel) {
+
+        SolarPanel existingPanel = repo.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Solar Panel not found with id: " + id));
+
+        existingPanel.setPanelName(updatedPanel.getPanelName());
+        existingPanel.setLocation(updatedPanel.getLocation());
+        existingPanel.setCapacity(updatedPanel.getCapacity());
+        existingPanel.setStatus(updatedPanel.getStatus());
+        existingPanel.setUser(updatedPanel.getUser());
+
+        return repo.save(existingPanel);
+    }
+
+    // delete panel by id
+    @Transactional
+    public void deletePanel(Long id) {
+
+        SolarPanel panel = repo.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Solar Panel not found with id: " + id));
+
+        sensorRepo.deleteByPanelId(id);
+        repo.delete(panel);
+    }
+
 }
