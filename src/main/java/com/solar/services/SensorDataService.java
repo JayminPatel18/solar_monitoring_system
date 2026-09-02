@@ -1,16 +1,19 @@
 package com.solar.services;
 
-import com.solar.dto.PerformanceDTO;
-import com.solar.dto.PowerAnalyticsDTO;
-import com.solar.dto.TemperatureAnalyticsDTO;
+import com.solar.dto.*;
+import com.solar.dto.ai.AiAnomalyResponse;
+import com.solar.dto.ai.AiSensorDataRequest;
 import com.solar.entity.SensorData;
 import com.solar.exception.ResourceNotFoundException;
 import com.solar.repository.SensorDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import com.solar.dto.SensorDataDTO;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class SensorDataService {

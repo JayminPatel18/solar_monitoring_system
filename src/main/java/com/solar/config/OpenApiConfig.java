@@ -11,6 +11,7 @@ import io.swagger.v3.oas.models.info.Info;
 
 import static java.awt.SystemColor.info;
 
+// This for 8080 service provide in web browser for backend. To show all api
 @Configuration
 public class OpenApiConfig {
 

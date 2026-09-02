@@ -9,6 +9,7 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
 
+// This for 5173 service provide in web browser for front end user experience. To Perform all Operation like backend
 @Configuration
 public class CorsConfig {
 

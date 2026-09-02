@@ -2,8 +2,11 @@ package com.solar.controller;
 
 import com.solar.dto.ApiResponse;
 import com.solar.dto.SensorDataDTO;
+import com.solar.dto.ai.AiAnomalyResponse;
+import com.solar.dto.ai.AiSensorDataRequest;
 import com.solar.entity.SensorData;
 import com.solar.repository.SensorDataRepository;
+import com.solar.services.AiService;
 import com.solar.services.SensorDataService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,6 +29,9 @@ public class SensorDataController {
 
     @Autowired
     private SensorDataService service;
+
+    @Autowired
+    private AiService aiService;
 
     // save data
     @Operation(summary = "Store sensor data")
@@ -130,5 +136,16 @@ public class SensorDataController {
         );
     }
 
+    // temporary use for AI Service
+    @PostMapping("/ai-test")
+    @PreAuthorize("hasAnyRole('TECHNICIAN','ADMIN')")
+    public ApiResponse<AiAnomalyResponse> testAi(
+            @RequestBody AiSensorDataRequest request) {
 
+        return new ApiResponse<>(
+                true,
+                "AI anomaly detection completed",
+                aiService.detectAnomaly(request)
+        );
+    }
 }
